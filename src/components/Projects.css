@@ -1,0 +1,277 @@
+/*
+ * Projects — editorial rows, not cards.
+ * Two device frames (browser chrome + iPhone bezel) built in CSS.
+ * Videos autoplay on scroll via IntersectionObserver; poster-only under
+ * prefers-reduced-motion.
+ */
+
+.projects {
+  padding-inline: clamp(1.5rem, 7vw, 5.5rem);
+  padding-block: clamp(5rem, 11vw, 9rem);
+  border-top: 1px solid var(--line);
+}
+
+/* ── Framing line ────────────────────────────────────────────────────────── */
+
+.projects-framing {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size: var(--step-3);
+  font-weight: 300;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  font-optical-sizing: auto;
+  margin: 0 0 clamp(3rem, 6vw, 5rem);
+  max-width: 28ch;
+}
+
+/* ── Project list ────────────────────────────────────────────────────────── */
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Project row ─────────────────────────────────────────────────────────── */
+
+.project-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: clamp(2.5rem, 5vw, 5rem);
+  align-items: start;
+  border-top: 1px solid var(--line);
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.project-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+/* Janus row: slightly more vertical space — it's the lead */
+.project-row--janus {
+  padding-block: clamp(3.5rem, 7vw, 6rem);
+}
+
+/* ── Project meta (left column) ──────────────────────────────────────────── */
+
+.project-meta {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  position: sticky;
+  top: clamp(6rem, 10vw, 8rem);
+}
+
+.project-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.875rem;
+  flex-wrap: wrap;
+}
+
+.project-title {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size: var(--step-2);
+  font-weight: 300;
+  color: var(--text);
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.project-desc {
+  font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--step-0);
+  color: var(--text-muted);
+  line-height: 1.65;
+  max-width: 48ch;
+  margin: 0;
+}
+
+/* ── Tags ────────────────────────────────────────────────────────────────── */
+
+.project-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-tag {
+  font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--step--1);
+  line-height: 1;
+  padding: 0.3em 0.65em;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.project-tag--type {
+  color: var(--accent);
+  border: 1px solid rgba(224, 166, 75, 0.3);
+  background: rgba(224, 166, 75, 0.06);
+}
+
+.project-tag--tech {
+  color: var(--text-muted);
+  border: 1px solid var(--line);
+  background: transparent;
+}
+
+/* ── Project media (right column) ────────────────────────────────────────── */
+
+.project-media {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+.project-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Browser frame ───────────────────────────────────────────────────────── */
+
+.browser-frame {
+  flex: 1 1 0;
+  min-width: 0;
+  border: 1px solid rgba(237, 232, 223, 0.14);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.browser-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-2);
+  border-bottom: 1px solid rgba(237, 232, 223, 0.08);
+  min-height: 32px;
+}
+
+.browser-dots {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.browser-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(237, 232, 223, 0.12);
+}
+
+.browser-url {
+  flex: 1;
+  font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.2em 0.5em;
+  background: rgba(14, 12, 10, 0.5);
+  border-radius: 4px;
+  max-width: 14rem;
+  margin: 0 auto;
+}
+
+.browser-content {
+  line-height: 0; /* remove inline-block gap under video */
+}
+
+/* ── Phone frame ─────────────────────────────────────────────────────────── */
+
+.phone-frame {
+  flex: 0 0 auto;
+  /* width relative to browser frame: phone shows beside it at ~30% of media area */
+  width: clamp(100px, 22%, 160px);
+  border: 1.5px solid rgba(237, 232, 223, 0.18);
+  border-radius: 36px;
+  overflow: hidden;
+  background: #0a0908;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(237, 232, 223, 0.06);
+  padding-top: 28px; /* space for dynamic island */
+  position: relative;
+}
+
+.phone-island {
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30%;
+  max-width: 60px;
+  height: 9px;
+  background: #000;
+  border-radius: 20px;
+  border: 1px solid rgba(237, 232, 223, 0.1);
+}
+
+.phone-content {
+  line-height: 0;
+  overflow: hidden;
+  border-radius: 0 0 34px 34px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .project-row {
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .project-meta {
+    position: static;
+  }
+
+  .project-desc {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .projects-framing {
+    max-width: 100%;
+  }
+
+  .phone-frame {
+    width: clamp(80px, 20%, 120px);
+    border-radius: 26px;
+    padding-top: 22px;
+  }
+
+  .phone-island {
+    top: 7px;
+    height: 7px;
+  }
+
+  .phone-content {
+    border-radius: 0 0 24px 24px;
+  }
+
+  .browser-frame {
+    border-radius: 6px;
+  }
+
+  .browser-url {
+    display: none;
+  }
+}

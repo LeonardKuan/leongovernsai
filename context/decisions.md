@@ -49,6 +49,54 @@ Changed from `baseline` to `center` so logos and text sit at the same visual mid
 
 ---
 
+## Session 8 — Projects section: editorial rows + device frames + clipped video clips (2026-09-17)
+
+### Layout: editorial rows, not cards
+
+Two project rows separated by hairline borders (`border-top: 1px solid var(--line)`). No border-radius, no shadow on the row itself — structure encodes information (it's a divider, not a container). Each row is a 2-column CSS grid: `1fr 2fr` — left column is sticky meta (title + desc + tags), right column is media (browser + phone frames). Janus row gets `padding-block: clamp(3.5rem, 7vw, 6rem)` vs standard `clamp(3rem, 6vw, 5rem)` — the lead project has more breathing room without a label saying so.
+
+### Device frames: CSS-only, no images
+
+**Browser chrome:** border, border-radius 8px, overflow hidden. Top bar (`--surface-2`) holds three neutral-grey dots (`rgba(237,232,223,0.12)`) and a centred faux URL bar showing the project name in `--text-faint`. Dots are intentionally neutral — not red/yellow/green — because colored stoplight dots are an overused pattern and add nothing. The URL bar shows `janus.app` / `valstats.app` — enough context without branding chrome.
+
+**iPhone bezel:** border-radius 36px, `border: 1.5px solid rgba(237,232,223,0.18)`, three-layer box-shadow for depth (`0 2px 4px + 0 12px 40px + inset 0 0 0 1px`). Dynamic island: `position: absolute`, 9px height, 30% width, `border-radius: 20px`, centred at top. Padding-top 28px creates space for the island before video content starts. No home indicator bar at bottom — adds CSS complexity for a detail that's invisible at this scale.
+
+### Video clips: ffmpeg multi-segment concat, status bar cropped
+
+Four source recordings in `public/media/` (two `.mp4` + two `.MP4` HEVC). System ffmpeg lacked HEVC decoder — used BtbN GPL build (`ffmpeg-master-latest-win64-gpl`, downloaded to `$env:TEMP`). Encoded all 8 clips (4 H.264 MP4 + 4 VP9 WebM).
+
+Cut rationale:
+- `janus-web`: 0–4s (cinematic landing) + 21–24s (markets screener) + 29–35.5s (arbitrage scanner). Cut at 29s not 35s — 35s shows the Compare view loading (skeleton). Arbitrage scanner is more impressive content.
+- `janus-phone`: 2–13s (landing hero → terminal widget → screener section). Started at 2s not 5s (original spec) — 0s was home screen, 2s is the first landing frame.
+- `valstats-web`: 0–6s (search) + 17–23s (stats overview). Skeleton loading at 6–17s cut.
+- `valstats-phone`: 5–7s (search beat) + 25–37s (stats/WRAPPED card). Started at 25s not 21s — 21s was still skeleton.
+
+Phone clips: `crop=1320:2718:0:150` removes the 150px iOS status bar (measured by dynamic island position at original resolution). Scale to w=720 (`scale=720:-2`). Posters generated with identical crop so first-frame and poster match exactly.
+
+All clips under 5MB: janus-web 1.1MB MP4 / 644KB WebM, janus-phone 2.8MB / 1.08MB, valstats-web 300KB / 198KB, valstats-phone 1.6MB / 998KB.
+
+### Autoplay: IntersectionObserver at 25% threshold
+
+`IntersectionObserver({ threshold: 0.25 })` in a `VideoPlayer` component (`useRef` + `useEffect`). Plays when 25% in view, pauses on exit. Under `prefers-reduced-motion: reduce`: no observer created, video stays on poster. This is correct — the motion IS the video, so reduced-motion means poster-only.
+
+### Tags: two classes, same pill shape
+
+`.project-tag--type` (amber tint: `color: --accent`, `border: 1px solid rgba(224,166,75,0.3)`, `background: rgba(224,166,75,0.06)`) for "Personal project". `.project-tag--tech` (muted: `border: 1px solid var(--line)`, no background) for stack tags. Same padding and border-radius — visual unity, semantic distinction via color system. No ALL-CAPS, no icon, no separator glyph.
+
+### No links on private projects
+
+Both projects are private and not live. No repo or live links. "Personal project" tag is the only indicator of provenance. Adding dead links would be worse than no links.
+
+### What was considered and rejected
+
+- Card layout with rounded corners + shadow per card — explicit anti-pattern in §5. Rejected immediately.
+- Colored macOS stoplight dots (red/yellow/green) in browser chrome — overused pattern, no information value here. Neutral grey dots used instead.
+- Home indicator bar on phone frame — adds CSS at a detail level invisible at this scale.
+- Animated placeholder / skeleton while video loads — that's the pattern we cut from the video clips themselves; poster-only is cleaner.
+- Starting janus-phone at 5s per original spec — 0s was home screen, 2s is first landing frame (better cold start).
+
+---
+
 ## Session 5 — Atmosphere pass (visible) + logo fix (2026-09-17)
 
 ### Hero WebGL gradient: domain-warped FBM noise, raw WebGL
