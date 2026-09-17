@@ -1,0 +1,98 @@
+/*
+ * Hero — the signature moment.
+ * Typography-led. One orchestrated reveal. Nothing else moves.
+ */
+
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-inline: clamp(1.5rem, 7vw, 5.5rem);
+  padding-top: clamp(5rem, 12vw, 9rem);
+  padding-bottom: clamp(3rem, 9vw, 7rem);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle warm ambient — barely perceptible, anchors the typography */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 55% at 0% 100%,
+    rgba(224, 166, 75, 0.055) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+/* ── Heading ─────────────────────────────────────────────────────────────── */
+
+.hero-heading {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size: var(--step-4);
+  font-weight: 300;
+  line-height: 1.03;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 clamp(1.75rem, 3.5vw, 2.75rem);
+  font-optical-sizing: auto;
+}
+
+.hero-line {
+  display: block;
+}
+
+/* Second line — italic: typographic distinction, not color accent */
+.hero-line--italic {
+  font-style: italic;
+}
+
+/* ── Meta ────────────────────────────────────────────────────────────────── */
+
+.hero-meta {
+  font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--step-0);
+  color: var(--text-muted);
+  max-width: 52ch;
+  line-height: 1.65;
+  margin: 0 0 clamp(2rem, 4.5vw, 3.25rem);
+}
+
+/* ── CTA link ────────────────────────────────────────────────────────────── */
+
+.hero-cta {
+  display: inline-block;
+  font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.hero-cta:hover {
+  color: var(--accent-strong);
+}
+
+.hero-cta:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ── Responsive adjustments ──────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .hero-heading {
+    letter-spacing: -0.015em;
+    line-height: 1.06;
+  }
+
+  .hero-meta {
+    max-width: 100%;
+  }
+}
