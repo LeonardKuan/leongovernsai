@@ -49,6 +49,54 @@ Changed from `baseline` to `center` so logos and text sit at the same visual mid
 
 ---
 
+## Session 9 — Craft/depth pass: cinematic showcase, dimensional device frames, screen-glow (2026-09-17)
+
+### Layout: full-width-ish showcase, meta at top
+
+Replaced the `1fr 2fr` grid (meta-left / small-media-right) with a stacked layout: `.project-meta` spans full width above the `.project-showcase`. This gives the videos room to be genuinely large. The showcase is a flex row — `browser-wrapper: flex: 1`, `phone-wrapper: flex: 0 0 clamp(160px,20%,230px)` — browser takes all remaining space, phone is fixed-size and overlaps with negative margin.
+
+### Compositional variety: phone position alternates
+
+Janus: phone RIGHT (`margin-left: clamp(-60px,-8%,-40px)` pulls phone into browser's right edge). VALSTATS: phone LEFT (`order: -1; margin-right: ...`). Different 3D tilt signs per project — Janus browser tilts `rotateY: 5`, phone `rotateY: -10`; VALSTATS browser `rotateY: -5`, phone `rotateY: 9`. The directional flip makes the two rows feel composed differently without requiring separate layout code.
+
+### 3D device tilt: GSAP transformPerspective, per-element
+
+`gsap.set(el, { transformPerspective: 1100 })` applies perspective to the element itself (not a parent), so each device has its own vanishing point. Browser: 1100px perspective, Phone: 900px — the phone reads as slightly closer. Resting tilt: `rotateX: -1.5, rotateY: ±5` browser; `rotateX: 2, rotateY: ∓10` phone. On scroll enter: animated from exaggerated initial tilt + `y: 28–40px` to resting state over 1.2s `power3.out`.
+
+### Mouse-move parallax: GSAP overwrite:'auto'
+
+`mousemove` on `.project-row` fires GSAP tweens on browser and phone wrappers: `±2.5/4.5°` (browser) and `±3.5/5.5°` (phone) added to resting values. `overwrite: 'auto'` ensures mouse-tracking doesn't stomp the reveal animation's opacity tween. On `mouseleave`: returns to resting tilt at 0.9s `power3.out`. Disabled entirely on `hover: none` (touch) and `prefers-reduced-motion` — no animation at all on those environments, devices appear flat + visible immediately.
+
+### Screen-glow: colored radial gradient, blur 88px
+
+`.device-glow` is `position: absolute` inside `.project-showcase`, painted before the device wrappers (DOM order = paint order, no z-index trickery needed). `filter: blur(88px)` on a radial gradient. Colors: Janus `rgba(0,200,175,0.18)/rgba(20,120,180,0.1)` (teal/cyan, terminal feel); VALSTATS `rgba(255,60,75,0.16)/rgba(180,30,50,0.07)` (Valorant red). Glow positioned toward the browser (dominant element): Janus `left: 5%`, VALSTATS `right: 5%`. Glow hidden on mobile (`display: none`) — a desktop depth cue that's superfluous in the stacked layout.
+
+### Browser chrome: actual macOS traffic-light colors
+
+Previous decision (neutral grey dots) reversed here — the instruction specifically called for "crisper" chrome. Using `#ff605c / #ffbd44 / #27c93f` (standard macOS traffic-light). URL bar centered, flanked by invisible spacer matching dot-cluster width so the URL is truly centered. Inner top-edge highlight via `browser-frame::before`: 1px gradient across top, `rgba(255,255,255,0.15)` at center — glass surface cue.
+
+### Phone bezel: bright edge highlight, glass sheen
+
+`.phone-frame::before` adds a full-inset `border: 1px solid rgba(255,255,255,0.07)` — simulates the physical bright edge of an aluminum device. `.phone-sheen` is an absolutely-positioned `linear-gradient(140deg, rgba(255,255,255,0.06) 0%, transparent 50%)` covering the frame — diagonal glass reflection in upper-left quadrant. Both are `pointer-events: none`, `z-index: 3` (above video content).
+
+### Multi-layer shadows for real elevation
+
+Browser: `0 1px 2px + 0 6px 18px + 0 22px 60px + 0 60px 120px` with decreasing opacity (0.55 → 0.2). Phone same structure: `0 1px 3px + 0 8px 24px + 0 30px 80px` plus inset `0 0 0 0.5px`. The stacked shadow layers create the perceptual jump between device and background.
+
+### Page vignette: body::before at z-index 992
+
+`body::before`: fixed, full-viewport, `radial-gradient(ellipse 130% 130% at 50% 40%, transparent 48%, rgba(14,12,10,0.32) 100%)`. Focal point at 40% vertical (slightly above center) — darkens the lower two-thirds more than the top, which is where the ambient shader lives. z-index 992, above grain (990), below cursor (9999). Applied globally including hero and about — purely additive depth, no structural changes to those sections.
+
+### What was considered and rejected
+
+- `box-shadow` for the glow rather than a separate DOM element — box-shadow can't be a large soft blob independently of the element's shape; the absolute `.device-glow` gives full control over position and size.
+- CSS `perspective` on `.project-showcase` (parent) rather than GSAP `transformPerspective` per element — shared perspective means devices share a vanishing point, making them feel like a flat panel rather than independent physical objects.
+- Framer Motion for the mouse parallax — GSAP's `overwrite: 'auto'` is the key requirement here (blending reveal + mouse tweens on the same property), and GSAP is already in the stack. No reason to add FM.
+- Keeping neutral grey browser dots — reversed: the instruction explicitly called for crisper/more realistic chrome, and the reference site (dimensional device rendering) uses real macOS colors.
+- Glow on mobile — removed (`display: none`). At mobile width, devices stack vertically and are flat; the glow is a desktop depth cue.
+
+---
+
 ## Session 8 — Projects section: editorial rows + device frames + clipped video clips (2026-09-17)
 
 ### Layout: editorial rows, not cards

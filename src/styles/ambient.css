@@ -60,6 +60,21 @@ body::after {
   }
 }
 
+/* ── Page vignette — edges darken, focus stays at the centre ─────────────── */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 130% 130% at 50% 40%,
+    transparent 48%,
+    rgba(14, 12, 10, 0.32) 100%
+  );
+  pointer-events: none;
+  z-index: 992;
+}
+
 /* ── Custom cursor: hide native when JS cursor is active ─────────────────── */
 body.has-custom-cursor,
 body.has-custom-cursor a,
