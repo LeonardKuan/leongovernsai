@@ -4,6 +4,35 @@ Ongoing log. Add to this before revisiting any completed section. Purpose: stop 
 
 ---
 
+## Session 4 — About enrichment: logos + credential (2026-09-17)
+
+### Logos: SVG text marks, color baked in, no filter
+
+Chose SVG text-based wordmarks over icon paths — icon-quality paths from memory risk brand inaccuracy; text marks are legible and accurate at 20px. Stored in `public/logos/` (Vite serves public/ at root, no bundler processing). Color `#A8A096` (--text-muted) baked directly into each SVG file rather than using CSS filter (`brightness(0) invert(1)`) — simpler, exact match, no filter chain to maintain. Site is dark by design (no light mode), so baking the dark-palette color is appropriate for now.
+
+Bristol deliberately uses serif (`Georgia,'Times New Roman',serif`) vs the sans-serif used for corporate entries — a quiet typographic signal that it is an academic institution, not a company. One detail that reads correctly without a label explaining it.
+
+If official brand SVGs are ever added, they should replace these files in place. The CSS only needs `height: 13px; width: auto;` — no filter changes required if the replacement SVGs also bake the right color.
+
+### Logo placement: left of org text, flex-end aligned as a unit
+
+`traj-org` changed to `display: flex; align-items: center; justify-content: flex-end; gap: 0.5rem` so the logo + org text pair right-aligns as a unit on desktop. On mobile (2-column layout, row 2), changed to `justify-content: flex-start` — logo appears before the text, left-aligned, which is correct reading order.
+
+The logo `height: 13px` is set optically — flush with the cap-height of the `--step--1` org text rather than a round 20px. At 13px the marks sit visually on the same baseline without overpowering the adjacent text.
+
+### Credential: single text line, --text-faint, no decoration
+
+`<p class="about-credential">GARP Responsible AI (RAI)</p>` below the trajectory strip. --step--1, --text-faint — below the muted body text on the scale. No label prefix ("Certification:"), no badge styling, no date. GARP RAI is self-explanatory to the target audience (AI/fintech technical peers). Adding a label would make it read like a CV line; the bare name reads as a known quantity for those who recognise it.
+
+### What was considered and rejected
+
+- Icon marks (geometric paths) for logos — risk inaccuracy; text marks are more reliable from memory at this size
+- CSS filter approach for monochrome — added complexity; baked color is simpler and exact
+- Putting the credential inside the trajectory strip — it's not a career position; separate placement keeps the timeline structure clean
+- Adding a "Certifications" section label — one item doesn't warrant a section; would read as CV scaffolding
+
+---
+
 ## Session 3 — Craft / atmosphere pass (2026-09-17)
 
 ### Film grain: SVG feTurbulence via body::after

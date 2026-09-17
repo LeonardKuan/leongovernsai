@@ -11,22 +11,26 @@ const TRAJECTORY = [
     period: 'Incoming',
     role: 'AI Product Manager',
     org: 'MoneyLion (Gen Digital)',
+    logo: 'moneylion',
     current: true,
   },
   {
     period: '2025–26',
     role: 'Specialist, Analytics & Intelligence',
     org: 'OKX, Kuala Lumpur',
+    logo: 'okx',
   },
   {
     period: '2022–25',
     role: 'Senior Data Analyst',
     org: 'Bloomberg, London',
+    logo: 'bloomberg',
   },
   {
     period: 'Education',
     role: 'BSc Mathematics & Physics',
     org: 'University of Bristol',
+    logo: 'bristol',
   },
 ]
 
@@ -90,7 +94,7 @@ export default function About() {
         </div>
 
         <div className="trajectory" role="list" aria-label="Career trajectory">
-          {TRAJECTORY.map(({ period, role, org, current }) => (
+          {TRAJECTORY.map(({ period, role, org, logo, current }) => (
             <div
               key={period}
               className={`traj-row${current ? ' traj-row--current' : ''}`}
@@ -98,10 +102,22 @@ export default function About() {
             >
               <span className="traj-period">{period}</span>
               <span className="traj-role">{role}</span>
-              <span className="traj-org">{org}</span>
+              <span className="traj-org">
+                {logo && (
+                  <img
+                    className="traj-logo"
+                    src={`/logos/${logo}.svg`}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                )}
+                {org}
+              </span>
             </div>
           ))}
         </div>
+
+        <p className="about-credential">GARP Responsible AI (RAI)</p>
       </div>
     </section>
   )

@@ -90,8 +90,27 @@
   font-size: var(--step--1);
   font-weight: 400;
   color: var(--text-muted);
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
   white-space: nowrap;
+}
+
+.traj-logo {
+  height: 13px; /* optical: sits flush with step--1 cap-height */
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* ── Credential line ─────────────────────────────────────────────────────── */
+
+.about-credential {
+  font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--step--1);
+  color: var(--text-faint);
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
 }
 
 /* ── Mobile ──────────────────────────────────────────────────────────────── */
@@ -126,6 +145,6 @@
   .traj-org {
     grid-column: 2;
     grid-row: 2;
-    text-align: left;
+    justify-content: flex-start;
   }
 }
