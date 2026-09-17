@@ -34,6 +34,29 @@ const TRAJECTORY = [
   },
 ]
 
+const STATS = [
+  {
+    number: '4',
+    unit: 'yrs',
+    label: 'data & ML across fintech — London to Kuala Lumpur',
+  },
+  {
+    number: '98–99',
+    unit: '%',
+    label: 'accuracy on the ML dispute-liability model at OKX',
+  },
+  {
+    number: '2,000',
+    unit: '+',
+    label: 'Bloomberg Terminal client queries resolved',
+  },
+  {
+    number: '3',
+    unit: null,
+    label: 'production analytics dashboards shipped end-to-end',
+  },
+]
+
 export default function About() {
   const container = useRef(null)
 
@@ -45,10 +68,8 @@ export default function About() {
 
       if (prefersReduced) return
 
-      // Initial state for trajectory rows
       gsap.set('.traj-row', { autoAlpha: 0 })
 
-      // Staggered fade-in as rows enter viewport — once only
       ScrollTrigger.batch('.traj-row', {
         onEnter: (elements) => {
           gsap.to(elements, {
@@ -70,27 +91,45 @@ export default function About() {
       <div className="about-inner">
         <p className="about-framing">
           Four years building the systems under financial data. Now focused on
-          making the AI inside them trustworthy.
+          making the AI inside them <em>trustworthy</em>.
         </p>
 
         <div className="about-body">
-          <p>
-            My background is quantitative — a maths and physics degree from
-            Bristol, where my final-year dissertation used neural networks to
-            encode quantum states, back before that was fashionable. Since then
-            I've built the analytics and machine-learning systems that sit under
-            financial data: anomaly-detection pipelines, an ML dispute-scoring
-            model, and LLM-powered tooling at OKX, and trade-and-quote
-            validation for latency-sensitive clients at Bloomberg in London.
-          </p>
-          <p>
-            In October I join MoneyLion (Gen Digital) as an AI Product Manager
-            on Instacash, where AI decisioning carries real consumer-finance
-            stakes and oversight isn't optional. Alongside the day job I build
-            and write in public — model evaluation, fairness and drift
-            monitoring, and the governance layer most teams treat as an
-            afterthought.
-          </p>
+          <div className="about-bio">
+            <p className="about-bio-lead">
+              My background is quantitative — a maths and physics degree from
+              Bristol, where my final-year dissertation used{' '}
+              <span className="about-strong">
+                neural networks to encode quantum states
+              </span>
+              , back before that was fashionable. Since then I've built the
+              analytics and machine-learning systems that sit under financial
+              data: anomaly-detection pipelines, an ML dispute-scoring model,
+              and LLM-powered tooling at OKX, and trade-and-quote validation
+              for latency-sensitive clients at Bloomberg in London.
+            </p>
+            <p>
+              In October I join{' '}
+              <span className="about-strong">MoneyLion (Gen Digital)</span> as
+              an AI Product Manager on Instacash, where AI decisioning carries
+              real consumer-finance stakes and oversight isn't optional.
+              Alongside the day job I build and write in public — model
+              evaluation, fairness and drift monitoring, and the governance
+              layer most teams treat as an afterthought.
+            </p>
+          </div>
+
+          <div className="stat-block">
+            {STATS.map(({ number, unit, label }) => (
+              <div key={label} className="stat">
+                <div className="stat-number">
+                  <span className="stat-value">{number}</span>
+                  {unit && <span className="stat-unit">{unit}</span>}
+                </div>
+                <p className="stat-label">{label}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="trajectory" role="list" aria-label="Career trajectory">
@@ -117,7 +156,10 @@ export default function About() {
           ))}
         </div>
 
-        <p className="about-credential">GARP Responsible AI (RAI)</p>
+        <p className="about-credential">
+          <span className="credential-dot" aria-hidden="true" />
+          GARP Responsible AI (RAI)
+        </p>
       </div>
     </section>
   )

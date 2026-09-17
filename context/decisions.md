@@ -4,6 +4,51 @@ Ongoing log. Add to this before revisiting any completed section. Purpose: stop 
 
 ---
 
+## Session 7 — About section redesign: two-column layout + stat block (2026-09-17)
+
+### Two-column body: 3fr bio / 2fr stat block
+
+`.about-body` changed from flex column to `grid-template-columns: 3fr 2fr`. Left column holds both bio paragraphs; right column holds a 2×2 stat block. Collapses to single column at ≤768px (stat block drops below bio). The 3:2 ratio gives bio enough room for the 68ch line-length while making the stat column feel substantial — not squeezed.
+
+### Stat block: Fraunces numbers, accent units, muted labels
+
+Four stats in a 2×2 CSS grid inside the right column. Each stat: number in Fraunces step-3 weight 300 (--text), unit suffix in Fraunces step-1 weight 300 (--accent), label in General Sans step--1 (--text-muted). Fraunces optical sizing on for both number and unit. Unit in accent rather than text keeps numbers readable at a glance — the accent signals what the number is measuring.
+
+Stats chosen: `4 yrs` (career span), `98–99%` (OKX model accuracy), `2,000+` (Bloomberg queries), `3` (dashboards shipped). Specific, verifiable, active-role-relevant — not vanity metrics.
+
+### Framing line: final word "trustworthy" in italic
+
+`<em>trustworthy</em>` within the Fraunces framing line. Fraunces italic is distinctively cursive — the contrast with the roman upright is visually meaningful, not decorative. The italic lands on the positioning keyword: the site's central claim. No color change, no weight change — the typeface does the work.
+
+### Bio paragraph hierarchy: first paragraph --text, key phrases weight 500
+
+Opening paragraph (`.about-bio-lead`) set to `color: var(--text)` — stronger visual weight for first impression. Second paragraph uses default `--text-muted`. Within both: `.about-strong` spans set key phrases to `color: var(--text); font-weight: 500`. Phrases highlighted: "neural networks to encode quantum states" (distinctive credential) and "MoneyLion (Gen Digital)" (incoming role). This avoids making the bio feel uniform grey without resorting to decorative color.
+
+### Logos: CSS filter brightness(0) invert(1), 28px height
+
+All logos switched from baked #EDE8DF fill to `filter: brightness(0) invert(1)` on black-fill SVGs + `opacity: 0.88` (slightly below full --text to avoid glare). Height increased from 18px to 28px. This allows using the official SVGs as-is without editing path colors. Opacity 0.88 softens the pure-white that the filter produces, matching the warm --text tone more closely.
+
+`moneylion.svg` viewBox corrected from `"0 0 748 567"` to `"70 302 608 122"` — crops the coordinate space to just the wordmark text paths (y≈305–419), excluding the lion icon above and tagline below. Without the crop, the logo text rendered at ~6px effective height within the 28px frame — unreadable.
+
+`bloomberg.svg` replaced (file was a binary WebP). New file: SVG `<text>` element, "bloomberg" lowercase, `font-weight: 700`, Helvetica/Arial system sans-serif, `fill="black"`. SVG text with system fonts renders correctly in `<img>` context. Bloomberg not on SimpleIcons CDN — text wordmark is an accurate representation of their all-lowercase brand convention.
+
+### Credential: amber dot retained
+
+`.credential-dot` is a 5px circle in `var(--accent)`, inline before the GARP text via flex row. Dot replaces the previous plain-text entry. Tiny amber marker connects the credential to the accent system without adding a label or badge chrome.
+
+### traj-row align-items: center (was baseline)
+
+Changed from `baseline` to `center` so logos and text sit at the same visual midpoint in each row. With logos at 28px height alongside step--1 (~14px) text, baseline alignment would float the logo above the text cap-height. Center alignment looks more considered.
+
+### What was considered and rejected
+
+- Three-column body layout — too complex; bio + stats is sufficient without a third zone
+- Stat numbers in a different color from --text — makes stats feel like accent decoration; --text + accent unit is cleaner split
+- Showing lion icon from moneylion.svg — logo icon + wordmark + tagline all in 28px was illegible; wordmark alone is the right call for this context
+- Geometric "B" lettermark for Bloomberg (used in session 5) — replaced with text wordmark which matches their actual all-lowercase brand
+
+---
+
 ## Session 5 — Atmosphere pass (visible) + logo fix (2026-09-17)
 
 ### Hero WebGL gradient: domain-warped FBM noise, raw WebGL
