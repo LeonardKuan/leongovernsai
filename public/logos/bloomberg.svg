@@ -1,3 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 14" role="img" aria-label="Bloomberg">
-  <text fill="#A8A096" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" x="0" y="11" letter-spacing="0.2">bloomberg</text>
+<!--
+  Bloomberg geometric "B" lettermark.
+  Bloomberg is absent from SimpleIcons CDN; this is a clean geometric stand-in.
+  Replace with official brand SVG if/when a licensed asset is available.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 20" aria-label="Bloomberg">
+  <!-- Vertical stem -->
+  <rect x="0" y="0" width="3" height="20" fill="#EDE8DF"/>
+  <!-- Upper bowl -->
+  <path d="M3 0 L9 0 Q14 0 14 5 Q14 10 9 10 L3 10 Z" fill="#EDE8DF"/>
+  <!-- Lower bowl (slightly wider per the classic B proportion) -->
+  <path d="M3 10 L10 10 Q16 10 16 15 Q16 20 10 20 L3 20 Z" fill="#EDE8DF"/>
 </svg>

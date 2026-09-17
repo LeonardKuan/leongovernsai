@@ -34,18 +34,18 @@
 }
 
 .nav-name {
-  color: var(--text-faint);
+  color: var(--text-muted);
   pointer-events: auto;
   user-select: none;
 }
 
 .nav-link {
-  color: var(--text-faint);
+  color: var(--text-muted);
   transition: color var(--dur-fast) var(--ease);
 }
 
 .nav-link:hover {
-  color: var(--text-muted);
+  color: var(--text);
 }
 
 .nav-link:focus-visible {

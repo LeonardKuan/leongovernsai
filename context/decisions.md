@@ -4,6 +4,37 @@ Ongoing log. Add to this before revisiting any completed section. Purpose: stop 
 
 ---
 
+## Session 5 — Atmosphere pass (visible) + logo fix (2026-09-17)
+
+### Hero WebGL gradient: domain-warped FBM noise, raw WebGL
+
+Built `HeroGL.jsx` — a raw WebGL canvas component with a custom GLSL fragment shader. No library dependency. The shader uses domain-warped FBM (fractal Brownian motion) via value noise: two noise lookups distort a third, producing organic cloud-like movement rather than regular tiling. Three-stop color ramp: --bg (#0E0C0A) → deep ember (#26120A approx) → muted amber (~65% of --accent). Canvas fills the hero section at devicePixelRatio capped to 2.
+
+Focal point at `vec2(0.85, 0.28)` — warm glow centres in the mid-upper-right, leaving lower-left dark for text contrast. Falloff via smoothstep over 0.92 distance, meaning the amber tapers organically rather than cutting off hard.
+
+prefers-reduced-motion: renders a single frame at t=20s (a visually interesting mid-animation snapshot) and stops. No rAF loop runs.
+
+Replaced `.hero-bg-parallax` (CSS radial gradient, GSAP parallax) entirely. The WebGL canvas does more visual work; the CSS gradient was redundant. GSAP ScrollTrigger import removed from Hero.jsx.
+
+### Hero top scrim: nav contrast protection
+
+`.hero::before` adds a 10rem dark-to-transparent gradient at the top of the hero. This keeps the fixed nav text readable regardless of what the shader renders at the very top edge. The nav link color was also lifted from --text-faint to --text-muted (hover: --text) since the hero now has a visible background.
+
+### Film grain: opacity lifted from 0.035 to 0.055
+
+At 0.035 the grain was literally sub-perceptual. 0.055 is still tasteful (below "heavy noise") but now reads as texture on screen. No structural change — still SVG feTurbulence via body::after.
+
+### Logos: lifted to --text, real marks where available
+
+Color changed from #A8A096 (--text-muted) to #EDE8DF (--text) across all four logos. Height increased from 13px to 18px.
+
+- **OKX**: replaced text wordmark with real SimpleIcons geometric path mark. SimpleIcons CDN returns it at `cdn.simpleicons.org/okx`. Fill changed from `#000000` to `#EDE8DF`.
+- **Bloomberg**: not on SimpleIcons CDN (404). Replaced text mark with a geometric "B" lettermark (rect stem + two quadratic-bezier bowls, lower bowl wider per classic B proportion). Flagged as stand-in — replace with official brand asset when available.
+- **MoneyLion**: text wordmark retained, fill lifted to #EDE8DF.
+- **Bristol**: serif text wordmark retained, fill lifted to #EDE8DF.
+
+---
+
 ## Session 4 — About enrichment: logos + credential (2026-09-17)
 
 ### Logos: SVG text marks, color baked in, no filter

@@ -98,7 +98,7 @@
 }
 
 .traj-logo {
-  height: 13px; /* optical: sits flush with step--1 cap-height */
+  height: 18px; /* readable as a logo mark at this scale */
   width: auto;
   flex-shrink: 0;
   display: block;
