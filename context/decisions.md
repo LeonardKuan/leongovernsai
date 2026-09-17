@@ -4,6 +4,40 @@ Ongoing log. Add to this before revisiting any completed section. Purpose: stop 
 
 ---
 
+## Session 2 — About section (2026-09-17)
+
+### Framing line: no max-width constraint, fills section padding
+
+The framing line uses Fraunces step-3 with no explicit max-width — it flows within the section's horizontal padding (~88px each side at 1440px), naturally wrapping to 3 lines at desktop. Earlier attempt with `22ch` produced 4 narrow lines; without constraint it reads at editorial measure. Body paragraphs keep their own `max-width: 68ch` cap per §4.
+
+### Trajectory strip: 3-col CSS grid, not a table
+
+Used CSS grid (`7.5rem 1fr auto`) on each row div rather than `<table>`. `display: contents` was considered but rejected — it prevents `border-top` on rows. Each `.traj-row` div carries its own hairline via `border-top: 1px solid var(--line)`. Last row gets `border-bottom` to cap the strip.
+
+Mobile collapses to 2-col: period spanning both rows on left (5.5rem), role and org stacked on right. No data lost.
+
+### Trajectory period contrast: bumped to --text-muted
+
+Original: `--text-faint` (#6E675E) gave ~3.7:1 contrast at step--1 (~14px) — below WCAG AA threshold of 4.5:1 for normal text. Fixed to `--text-muted` (#A8A096) = ~7.8:1. Visual hierarchy maintained through font weight (400 period vs 500 role). "Incoming" row period uses `--text` to signal current/future.
+
+### One scroll reveal: opacity only on strip rows, no Y
+
+The trajectory strip rows fade in (autoAlpha 0→1, stagger 0.09s) when they enter the viewport, `once: true`. No Y movement — the "fade-and-slide-up" anti-pattern requires BOTH. Opacity-only is restrained and tied to the content (sequential timeline rows appearing in order). Everything else in About is static.
+
+### Lenis / ScrollTrigger bridge
+
+Added `useLenis(() => ScrollTrigger.update())` in App.jsx via a `<LenisBridge>` component. Without this, Lenis smooth scroll desynchronises from GSAP ScrollTrigger positions, causing reveals to fire at wrong offsets.
+
+### About section background: same --bg, no surface switch
+
+Did not switch About to `--surface` (#17130F). A surface change without a structural container (card, panel) looks arbitrary. Layered surfaces are for contained elements, not full sections. Separation achieved by whitespace alone.
+
+### Chanel rule for About
+
+Nothing removed — section was built spare from the start. Copy is verbatim. Structure is: framing + two paragraphs + strip. No decorative elements were added.
+
+---
+
 ## Session 1 — hero scaffold (2026-09-17)
 
 ### Signature moment: clip-reveal, not slide-up
