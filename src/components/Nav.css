@@ -1,0 +1,49 @@
+/*
+ * Nav — minimal persistent header.
+ * No animation. No background. Just two anchors: identity (left) and destination (right).
+ * Sits above the hero without competing with it.
+ */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: clamp(1.5rem, 7vw, 5.5rem);
+  padding-block: clamp(1.25rem, 2.5vw, 1.75rem);
+  pointer-events: none; /* let hero clicks through the empty middle */
+}
+
+.nav-name,
+.nav-link {
+  pointer-events: auto;
+  font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--step--1);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.nav-name {
+  color: var(--text-faint);
+  user-select: none;
+}
+
+.nav-link {
+  color: var(--text-faint);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.nav-link:hover {
+  color: var(--text-muted);
+}
+
+.nav-link:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+  border-radius: 2px;
+}

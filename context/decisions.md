@@ -8,6 +8,8 @@ Ongoing log. Add to this before revisiting any completed section. Purpose: stop 
 
 ### Signature moment: clip-reveal, not slide-up
 
+Name: Leonard Kuan (@leonbuildsdata). Confirmed 2026-09-17 — do not change.
+
 **What:** GSAP timeline stamps each headline line into place via `clipPath: inset(0 0 100% 0) → inset(0 0 0% 0)`, with a slight `y` drift during the clip. Meta and CTA follow with `autoAlpha` only.
 
 **Why not slide-up:** Fade-and-slide-up on load is explicitly listed in §5 as the motion tell. The clip reveal reads as type being set — editorial and deliberate — rather than content "appearing" generically.
