@@ -20,6 +20,8 @@
   padding-inline: clamp(1.5rem, 7vw, 5.5rem);
   padding-block: clamp(5rem, 11vw, 9rem);
   border-top: 1px solid var(--line);
+  /* Contain any residual 3D-transform visual overflow */
+  overflow-x: clip;
 }
 
 /* ── Framing line ────────────────────────────────────────────────────────── */

@@ -1,0 +1,103 @@
+/*
+ * Positioning — POV statement + "What I work on" grid.
+ *
+ * One section reveal (opacity only) on scroll enter.
+ * No cards — work items use hairline top borders and whitespace.
+ * Amber accent used only on the final work-item heading.
+ */
+
+.positioning {
+  padding-inline: clamp(1.5rem, 7vw, 5.5rem);
+  padding-block: clamp(5rem, 11vw, 9rem);
+  border-top: 1px solid var(--line);
+}
+
+/* ── POV statement ───────────────────────────────────────────────────────── */
+
+.positioning-pov {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size: var(--step-1);
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  font-optical-sizing: auto;
+  max-width: 68ch;
+  margin: 0 0 clamp(4rem, 8vw, 7rem);
+}
+
+/* ── Work block ──────────────────────────────────────────────────────────── */
+
+.positioning-work {
+  /* No visual wrapper — whitespace separates it from the POV */
+}
+
+.work-label {
+  font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--step--1);
+  color: var(--text-faint);
+  margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* ── Work grid — 2×2, hairline-separated, no cards ──────────────────────── */
+
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: clamp(3rem, 6vw, 6rem);
+  row-gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.work-item {
+  border-top: 1px solid var(--line);
+  padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
+  /* First two items share the top grid border — remove their individual top border
+     via margin-top: -1px so they sit flush against .work-grid's border-top */
+  margin-top: -1px;
+}
+
+.work-heading {
+  font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.3;
+  margin: 0 0 0.6em;
+}
+
+/* Last item (MoneyLion / responsible AI) — amber accent on heading only */
+.work-heading--accent {
+  color: var(--accent);
+}
+
+.work-body {
+  font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--step-0);
+  color: var(--text-muted);
+  line-height: 1.65;
+  max-width: 44ch;
+  margin: 0;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .work-item {
+    margin-top: 0;
+  }
+
+  .work-body {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .positioning-pov {
+    max-width: 100%;
+  }
+}

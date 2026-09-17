@@ -49,6 +49,46 @@ Changed from `baseline` to `center` so logos and text sit at the same visual mid
 
 ---
 
+## Session 10 — Projects tilt fix + Positioning section (2026-09-17)
+
+### Part A — Projects tilt overhaul: near-zero resting lean
+
+The Session 9 tilt values (`rotateY: ±5°/±10°`) with `transformPerspective: 900–1100px` caused visible overflow and meta/device overlap at all breakpoints. Root cause: steep rotation on a wide element at close perspective creates a large visual bounding-box shift (element's CSS box doesn't move, but the rendered pixels spill out). Fix: three-part.
+
+1. **Resting tilt reduced to ≤2°:** Janus browser `rotateY: 1.5`, phone `rotateY: -2`; VALSTATS browser `rotateY: -1.5`, phone `rotateY: 2`. The direction flip between projects is preserved for compositional variety — only the magnitude changed. At 1.5°–2° the lean is barely perceptible but still creates the sense of a physical object rather than a flat panel. `rotateX` dropped entirely — unnecessary at this rotation scale.
+
+2. **Perspective increased to 1400/1200px:** Larger perspective value = less apparent foreshortening per degree. At 1400px perspective, a 1.5° rotation produces negligible positional shift. Old values (900/1100px) amplified the tilt visually beyond what the degree values implied.
+
+3. **`overflow-x: clip` on `.projects`:** Belt-and-suspenders. Unlike `overflow: hidden`, `clip` does not create a scroll container or stacking context. Catches any residual transform bleed without affecting scroll behaviour or z-index stacking of device glow.
+
+Mouse-parallax cap reduced: browser `±0.8°`, phone `±1°` (was `±4.5°/±5.5°`). Max possible rotation including parallax: 2.3° browser, 3° phone. No element can cause overflow at these values at any breakpoint.
+
+Initial over-tilt for scroll reveal: `sign * 3°` additional (was `sign * 9/10°`). The reveal settlement reads as intentional movement without starting from an extreme position.
+
+### Part B — Positioning section: POV statement + What I work on
+
+New section inserted between About and Projects, at `id="focus"`. Registered in `App.jsx` between `<About />` and `<Projects />`.
+
+**One-section scroll reveal:** `gsap.set(sectionRef.current, { autoAlpha: 0 })` + `ScrollTrigger.create({ start: 'top 82%', once: true, onEnter: ... })` animating the whole section opacity to 1 in 0.75s. No per-element stagger — the section-level fade is restrained enough. Under `prefers-reduced-motion`, the `if (reduced) return` guard leaves the section at its un-set opacity (1, visible), correct.
+
+**POV statement:** Fraunces step-1, weight 300, `var(--text)` (full text color, not muted). `max-width: 68ch`. Set at step-1 rather than step-2 because the statement is body text in function — a long paragraph — but the editorial weight of Fraunces at step-1 vs General Sans at step-0 gives it the elevated presence it needs without shouting. No lead-paragraph tricks (drop cap, weight 700 opener).
+
+**Work grid: 2×2 CSS grid, hairline borders, no cards.** `border-top: 1px solid var(--line)` on `.work-grid` + `border-top: 1px solid var(--line)` on each `.work-item`, with `margin-top: -1px` on `.work-item` to collapse the double-border where the grid top-border and item top-borders coincide for row-1. Result: visually a 3-line hairline structure (top of grid, between rows) regardless of how many items are in row 1. Column gap generous (`clamp(3rem, 6vw, 6rem)`) — whitespace does the separation, not any box styling.
+
+**Amber accent — one use only:** `.work-heading--accent` on the fourth item ("Responsible AI in high-stakes domains"). This is the positioning keyword — the role Leonard is moving into at MoneyLion. One amber heading in the entire section. No other color deviations.
+
+**Mobile:** grid collapses to single column at ≤768px (`grid-template-columns: 1fr`). `margin-top: -1px` reset to 0 on mobile since the first item is now alone in row 1.
+
+### What was considered and rejected
+
+- Keeping `rotateX` in resting state — added unnecessary visual complexity at near-zero scales; dropped.
+- Using `overflow: hidden` on `.projects` — creates a new stacking context and can clip positioned children (device-glow, phone-wrapper z-index). `clip` avoids both issues.
+- Per-element stagger on Positioning work items — would require `ScrollTrigger` per item and reads as the "fade-and-slide-up on every element" anti-pattern. Section-level reveal only.
+- Positioning POV at `step-2` Fraunces — too large for a paragraph-length statement; at step-2 it would require very tight wrapping or overflow at moderate widths.
+- Numbered list for work items — explicitly banned in §5 unless content is genuinely sequential. These are concurrent focus areas, not a sequence.
+
+---
+
 ## Session 9 — Craft/depth pass: cinematic showcase, dimensional device frames, screen-glow (2026-09-17)
 
 ### Layout: full-width-ish showcase, meta at top

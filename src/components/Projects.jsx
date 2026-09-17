@@ -16,9 +16,10 @@ const PROJECTS = [
       'A crypto intelligence platform modeled on a Bloomberg terminal: screener, correlation view, arbitrage scanner, and terminal layout — fronted by a cinematic animated landing.',
     tags: ['React', 'Framer Motion', 'Vercel'],
     phonePosition: 'right',
-    // Resting tilt: browser leans slightly right, phone counter-leans left
-    browserTilt: { rx: -1.5, ry: 5 },
-    phoneTilt: { rx: 2, ry: -10 },
+    // Near-flat resting tilt — depth comes from shadow + glow, not rotation.
+    // ≤2° so nothing overflows its container at any breakpoint.
+    browserTilt: { ry: 1.5 },
+    phoneTilt: { ry: -2 },
     web: {
       mp4: '/media/clips/janus-web.mp4',
       webm: '/media/clips/janus-web.webm',
@@ -38,9 +39,8 @@ const PROJECTS = [
       'An installable Valorant stats PWA: rank and RR, match history, agent-by-agent breakdowns, and a shareable canvas-rendered player card.',
     tags: ['Vanilla JS', 'PWA', 'Service Worker', 'Cloudflare Pages'],
     phonePosition: 'left',
-    // Mirror the tilt for variety — browser leans left, phone right
-    browserTilt: { rx: -1.5, ry: -5 },
-    phoneTilt: { rx: 2, ry: 9 },
+    browserTilt: { ry: -1.5 },
+    phoneTilt: { ry: 2 },
     web: {
       mp4: '/media/clips/valstats-web.mp4',
       webm: '/media/clips/valstats-web.webm',
@@ -101,7 +101,7 @@ function ProjectRow({ project }) {
   const phoneRef = useRef(null)
   const revealedRef = useRef(false)
 
-  /* Scroll reveal + resting tilt */
+  /* Scroll reveal — devices settle from a subtle tilt to near-flat */
   useGSAP(
     () => {
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -109,30 +109,19 @@ function ProjectRow({ project }) {
       const br = browserRef.current
       const pr = phoneRef.current
 
-      // Mobile / reduced-motion: flat, visible immediately
       if (reduced || touch) {
         gsap.set([br, pr], { autoAlpha: 1 })
         return
       }
 
-      // Set per-element perspective (GSAP transformPerspective)
-      gsap.set(br, { transformPerspective: 1100 })
-      gsap.set(pr, { transformPerspective: 900 })
+      // Perspective only needed for the 1-2° resting lean; large value = subtle effect
+      gsap.set(br, { transformPerspective: 1400 })
+      gsap.set(pr, { transformPerspective: 1200 })
 
-      // Initial: hidden, over-tilted, slightly lifted
+      // Initial: invisible, rotated 3° more than resting (total ≤5°), lifted 20px
       const sign = phonePosition === 'right' ? 1 : -1
-      gsap.set(br, {
-        autoAlpha: 0,
-        rotateX: browserTilt.rx - 3,
-        rotateY: browserTilt.ry + sign * 9,
-        y: 28,
-      })
-      gsap.set(pr, {
-        autoAlpha: 0,
-        rotateX: phoneTilt.rx + 4,
-        rotateY: phoneTilt.ry - sign * 10,
-        y: 40,
-      })
+      gsap.set(br, { autoAlpha: 0, rotateY: browserTilt.ry + sign * 3, y: 20 })
+      gsap.set(pr, { autoAlpha: 0, rotateY: phoneTilt.ry - sign * 3, y: 28 })
 
       ScrollTrigger.create({
         trigger: rowRef.current,
@@ -142,20 +131,18 @@ function ProjectRow({ project }) {
           revealedRef.current = true
           gsap.to(br, {
             autoAlpha: 1,
-            rotateX: browserTilt.rx,
             rotateY: browserTilt.ry,
             y: 0,
-            duration: 1.2,
+            duration: 1.1,
             ease: 'power3.out',
           })
           gsap.to(pr, {
             autoAlpha: 1,
-            rotateX: phoneTilt.rx,
             rotateY: phoneTilt.ry,
             y: 0,
-            duration: 1.2,
+            duration: 1.1,
             ease: 'power3.out',
-            delay: 0.13,
+            delay: 0.1,
           })
         },
       })
@@ -163,7 +150,7 @@ function ProjectRow({ project }) {
     { scope: rowRef, dependencies: [] }
   )
 
-  /* Mouse-move parallax */
+  /* Mouse-move parallax — barely perceptible, capped at ±0.8° */
   useEffect(() => {
     const row = rowRef.current
     const br = browserRef.current
@@ -178,19 +165,16 @@ function ProjectRow({ project }) {
       if (!revealedRef.current) return
       const rect = row.getBoundingClientRect()
       const dx = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2)
-      const dy = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2)
 
       gsap.to(br, {
-        rotateX: browserTilt.rx - dy * 2.5,
-        rotateY: browserTilt.ry + dx * 4.5,
-        duration: 0.55,
+        rotateY: browserTilt.ry + dx * 0.8,
+        duration: 0.7,
         ease: 'power2.out',
         overwrite: 'auto',
       })
       gsap.to(pr, {
-        rotateX: phoneTilt.rx - dy * 3.5,
-        rotateY: phoneTilt.ry + dx * 5.5,
-        duration: 0.55,
+        rotateY: phoneTilt.ry + dx * 1,
+        duration: 0.7,
         ease: 'power2.out',
         overwrite: 'auto',
       })
@@ -198,16 +182,14 @@ function ProjectRow({ project }) {
 
     function onLeave() {
       gsap.to(br, {
-        rotateX: browserTilt.rx,
         rotateY: browserTilt.ry,
-        duration: 0.9,
+        duration: 1.0,
         ease: 'power3.out',
         overwrite: 'auto',
       })
       gsap.to(pr, {
-        rotateX: phoneTilt.rx,
         rotateY: phoneTilt.ry,
-        duration: 0.9,
+        duration: 1.0,
         ease: 'power3.out',
         overwrite: 'auto',
       })
@@ -219,7 +201,7 @@ function ProjectRow({ project }) {
       row.removeEventListener('mousemove', onMove)
       row.removeEventListener('mouseleave', onLeave)
     }
-  }, []) // stable refs from module-level constant — deps won't change
+  }, [])
 
   return (
     <div className={`project-row project-row--${id}`} ref={rowRef}>

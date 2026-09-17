@@ -4,6 +4,7 @@ import { ReactLenis, useLenis } from 'lenis/react'
 import Nav from './components/Nav.jsx'
 import Hero from './components/Hero.jsx'
 import About from './components/About.jsx'
+import Positioning from './components/Positioning.jsx'
 import Projects from './components/Projects.jsx'
 import Cursor from './components/Cursor.jsx'
 import './styles/ambient.css'
@@ -31,6 +32,7 @@ export default function App() {
       <Nav />
       <Hero />
       <About />
+      <Positioning />
       <Projects />
     </ReactLenis>
   )
