@@ -1,6 +1,7 @@
 /*
  * Hero — the signature moment.
- * Typography-led. One orchestrated reveal. Nothing else moves.
+ * Typography-led. One orchestrated reveal on load. One subtle parallax on scroll.
+ * Everything else is quiet.
  */
 
 .hero {
@@ -15,17 +16,19 @@
   overflow: hidden;
 }
 
-/* Subtle warm ambient — barely perceptible, anchors the typography */
-.hero::before {
-  content: '';
+/* Parallax warm ambient — GSAP moves this on scroll */
+.hero-bg-parallax {
   position: absolute;
-  inset: 0;
+  inset: -10%; /* oversized so parallax movement doesn't reveal edges */
+  width: 120%;
+  height: 120%;
   background: radial-gradient(
     ellipse 80% 55% at 0% 100%,
-    rgba(224, 166, 75, 0.055) 0%,
+    rgba(224, 166, 75, 0.05) 0%,
     transparent 65%
   );
   pointer-events: none;
+  will-change: transform;
 }
 
 /* ── Heading ─────────────────────────────────────────────────────────────── */
@@ -34,8 +37,8 @@
   font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
   font-size: var(--step-4);
   font-weight: 300;
-  line-height: 1.03;
-  letter-spacing: -0.025em;
+  line-height: 1.0;          /* tightened from 1.03 — more print-editorial */
+  letter-spacing: -0.03em;   /* tightened from -0.025em — optical at large size */
   color: var(--text);
   margin: 0 0 clamp(1.75rem, 3.5vw, 2.75rem);
   font-optical-sizing: auto;
@@ -88,8 +91,8 @@
 
 @media (max-width: 480px) {
   .hero-heading {
-    letter-spacing: -0.015em;
-    line-height: 1.06;
+    letter-spacing: -0.02em;  /* slightly looser than desktop — optical at smaller size */
+    line-height: 1.04;
   }
 
   .hero-meta {

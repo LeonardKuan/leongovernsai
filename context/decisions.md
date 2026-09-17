@@ -4,6 +4,48 @@ Ongoing log. Add to this before revisiting any completed section. Purpose: stop 
 
 ---
 
+## Session 3 — Craft / atmosphere pass (2026-09-17)
+
+### Film grain: SVG feTurbulence via body::after
+
+Static grain overlay via `body::after` with a `data:` SVG using `feTurbulence` (fractalNoise, 0.72 baseFrequency, 4 octaves, `stitchTiles='stitch'`). Tiled at 180×180px, `opacity: 0.035` — below conscious threshold; adds perceived depth. No JavaScript, no motion. `prefers-reduced-motion` not relevant here — grain is static texture, not animation.
+
+`z-index: 990` ensures it sits above all content but below no element (the cursor dot at 9999 still shows through correctly since it's a real DOM element).
+
+### Ambient drift: fixed .bg-ambient, CSS animation only
+
+Two faint radial gradients (warm amber at bottom-left, faint parchment at top-right) drifting 4%/3% over 28s via CSS keyframe. Opacity so low (0.022/0.007) the drift is felt not seen — pure atmosphere, not a feature. `position: fixed`, oversized to 140% to prevent edge-reveal. `animation: none` under `prefers-reduced-motion`. No JS involved.
+
+Replaced the `::before` pseudo-element on `.hero` with a real `.hero-bg-parallax` div — pseudo-elements can't be GSAP targets. The global `.bg-ambient` handles overall page warmth; the hero div handles the GSAP parallax layer specific to the hero.
+
+### Custom cursor: 6px amber dot, GSAP lag
+
+Touch-first progressive enhancement: `(hover: none)` matchMedia check — cursor activates only on pointer devices. `body.has-custom-cursor` class gates `cursor: none` on body, anchors, and buttons. On pointer devices only: 6px circular dot in `--accent`, z-index 9999. GSAP `duration: 0.38, ease: power2.out` creates organic lag. Scale 2.4× on hover over `a`/`button` elements. Cleaned up on unmount.
+
+Cursor was the one element at risk of being decorative. Justified: it reinforces the precision-craft read and correctly hides native cursor only when active.
+
+### Hero parallax: .hero-bg-parallax drifts yPercent 0→10 on scroll
+
+GSAP `fromTo` with `scrub: 1.5` on ScrollTrigger (trigger: hero section, start: top top, end: bottom top). The parallax element is oversized (`inset: -10%`, 120%) so parallax movement never reveals edges. Movement is slow and small — content never shifts, only the background warmth.
+
+### CustomEase 'brand' matches CSS --ease token exactly
+
+`CustomEase.create('brand', '0.22, 1, 0.36, 1')` — identical cubic-bezier values to `--ease` token. Both the load timeline and any GSAP ScrollTrigger motion use the same easing curve. Visual consistency without perceptible repetition.
+
+### Micro-typography tightening
+
+- Hero heading: `letter-spacing -0.03em` (was -0.025em), `line-height 1.0` (was 1.03) — more print-editorial at step-4 size
+- Hero heading mobile: `letter-spacing -0.02em`, `line-height 1.04` — slightly loosened because optical correction needed at smaller size
+- Framing line: `letter-spacing -0.025em`, `line-height 1.12` (was 1.2) — tighter at step-3
+- Body paragraphs: `line-height 1.68` (was 1.7) — negligible but consistent direction
+- Trajectory period: `letter-spacing 0.01em` — slight open tracking aids readability on small metadata text
+
+### Chanel rule for craft pass
+
+Removed: the `::before` gradient on hero (replaced by cleaner real element). Nothing else was added decoratively. Grain and ambient drift were added but both are below conscious threshold — they remove the sense of flatness rather than decorating. The cursor is the only visible addition; it replaced the native cursor.
+
+---
+
 ## Session 2 — About section (2026-09-17)
 
 ### Framing line: no max-width constraint, fills section padding

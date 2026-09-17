@@ -1,0 +1,25 @@
+/*
+ * Custom cursor — small amber dot, GSAP-lagged.
+ * Visible only on pointer devices (hover: hover).
+ * Scale × 2.4 on interactive elements.
+ */
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform, opacity;
+  /* Hardware-composite only — no box-shadow, no blur, no mix-blend */
+}
+
+@media (hover: none) {
+  .cursor-dot {
+    display: none;
+  }
+}

@@ -4,6 +4,8 @@ import { ReactLenis, useLenis } from 'lenis/react'
 import Nav from './components/Nav.jsx'
 import Hero from './components/Hero.jsx'
 import About from './components/About.jsx'
+import Cursor from './components/Cursor.jsx'
+import './styles/ambient.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -13,10 +15,18 @@ function LenisBridge() {
   return null
 }
 
+// Very slow warm drift — texture, not feature.
+// Opacity so low it reads as atmosphere.
+function BgAmbient() {
+  return <div className="bg-ambient" aria-hidden="true" />
+}
+
 export default function App() {
   return (
-    <ReactLenis root>
+    <ReactLenis root options={{ lerp: 0.08 }}>
       <LenisBridge />
+      <BgAmbient />
+      <Cursor />
       <Nav />
       <Hero />
       <About />

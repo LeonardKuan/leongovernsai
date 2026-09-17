@@ -19,8 +19,8 @@
   font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
   font-size: var(--step-3);
   font-weight: 300;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  line-height: 1.12;          /* tightened from 1.2 — matches hero rhythm */
+  letter-spacing: -0.025em;  /* tightened from -0.02em — optical at step-3 */
   color: var(--text);
   font-optical-sizing: auto;
   /* No max-width — fills section padding, ~3 lines at desktop */
@@ -40,8 +40,8 @@
   font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
   font-size: var(--step-0);
   color: var(--text-muted);
-  line-height: 1.7;
-  max-width: 68ch; /* hard cap per §4 */
+  line-height: 1.68;   /* tightened from 1.7 — slightly crisper rhythm */
+  max-width: 68ch;     /* hard cap per §4 */
 }
 
 /* ── Trajectory strip ────────────────────────────────────────────────────── */
@@ -68,7 +68,8 @@
   font-family: 'General Sans', ui-sans-serif, system-ui, sans-serif;
   font-size: var(--step--1);
   font-weight: 400;
-  color: var(--text-muted); /* --text-faint fails AA at this size; muted passes */
+  letter-spacing: 0.01em;   /* slight open tracking aids readability on metadata */
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
